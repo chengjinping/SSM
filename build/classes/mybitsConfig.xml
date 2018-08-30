@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+ 
+ <!--
+   settings包含很多重要的设置项 :
+     setting用来配置每一个设置项:
+       name:设置项的名字
+       value:设置项的值
+  -->
+  <settings>
+     <!-- 映射下划线到驼峰命名last_name->lastName 写sql语句时就不需要写别名了-->
+  	<setting name="mapUnderscoreToCamelCase" value="true"/>
+  </settings>
+  
+
+  
+  
+<databaseIdProvider type="DB_VENDOR">  <!--  作用就是得到数据库厂商的标识  DB_VENDOR:VendoeDatabaseProvider-->
+	<!-- name数据库标识,不能乱写可通过Connection.getMetaData().getDataBaseProductName()获取 -->
+	<property name="MySQL" value="mysql"/><!-- 为不同的数据库厂商起别名 -->
+	<property name="Oracle" value="oracle"/>
+	<property name="SQL Server" value="sqlserver"/>
+</databaseIdProvider>
+    
+    
+</configuration>

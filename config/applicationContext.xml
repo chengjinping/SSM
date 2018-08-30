@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+<!-- 开启注解扫描不包括controller,springmvc扫描过了 -->
+<context:component-scan base-package="com.cjp.ssm">
+<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+</context:component-scan>
+<!-- 加载外部文件 -->
+<context:property-placeholder location="classpath:db.properties"/>
+<!-- 配置连接池 -->
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+p:jdbcUrl="${jdbc.url}" p:driverClass="${jdbc.Driver}" p:user="${jdbc.user}" p:password="${jdbc.password}">
+</bean>
+
+<!-- 配置事务管理器 -->
+<bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
+p:dataSource-ref="dataSource">
+</bean>
+
+<!-- 开启基于注解的事务 -->
+<tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+
+<!-- 整合mybits:创建sqlSessionFactory对象 -->
+<bean id="" class="org.mybatis.spring.SqlSessionFactoryBean" p:configLocation="classpath:mybitsConfig.xml"
+p:dataSource-ref="dataSource">
+<property name="typeAliasesPackage" value="com.cjp.ssm.entities"></property>
+<property name="mapperLocations" value="classpath:mybits/*.xml"></property>
+</bean>
+
+<!-- 扫描所有mapper接口,生成代理类,可以使用@Autowired进行注解 -->
+<mybatis-spring:scan base-package="com.cjp.ssm.dao"/>
+<!-- 如果版本比较低,上面的写法会报错,但不影响执行.下面使用另一种方法 -->
+<!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+<property name="basePackage" value="com.cjp.ssm.dao"></property>
+</bean> -->
+</beans>
