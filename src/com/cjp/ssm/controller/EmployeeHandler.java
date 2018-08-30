@@ -18,6 +18,7 @@ public class EmployeeHandler {
 	public String getAllEmps(Map<String,Object> maps){
 		List<Employee> allEmps = employeeService.getAllEmps();
 		maps.put("allEmps", allEmps);
+		System.out.println("nihao");
 		return "list";
 		
 	}
